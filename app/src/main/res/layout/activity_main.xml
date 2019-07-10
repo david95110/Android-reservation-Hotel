@@ -28,15 +28,15 @@
 
         <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
             android:id="@+id/titleActionBar"
-            android:text="Main"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@+id/lightButton"
-            android:layout_toStartOf="@+id/historyButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" />
+            android:layout_toStartOf="@+id/historyButton"
+            android:layout_toEndOf="@+id/lightButton"
+            android:gravity="center"
+            android:text="Reservation de salles"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/historyButton"

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">QrScanner</string>
-    <string name="qr_hint">Hover to QR-code</string>
+    <string name="app_name">Reservation de salles</string>
+    <string name="qr_hint">Scanner le code QR-code</string>
 </resources>
