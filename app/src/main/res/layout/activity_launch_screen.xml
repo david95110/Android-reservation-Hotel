@@ -21,15 +21,14 @@
         />
 
     <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:text="&#169; Yergali Zhakhan"
-        android:textAlignment="center"
         android:textColor="@color/orange"
-        android:textSize="15sp"
         android:textStyle="normal"
-        tools:text="Reservation de salles" />
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
