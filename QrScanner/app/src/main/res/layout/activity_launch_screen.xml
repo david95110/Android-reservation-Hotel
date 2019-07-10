@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kz.zhakhanyergali.qrscanner.Activity.LaunchScreenActivity">
+
+    <ImageView
+        android:src="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
+    <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="&#169; Yergali Zhakhan"
+        android:textAlignment="center"
+        android:textColor="@color/orange"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        tools:text="Reservation de salles" />
+
+</RelativeLayout>
