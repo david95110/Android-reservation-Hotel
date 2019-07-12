@@ -1,5 +1,6 @@
 package kz.zhakhanyergali.qrscanner.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.TextView;
@@ -18,17 +19,13 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class Api extends AsyncTask {
+import kz.zhakhanyergali.qrscanner.R;
 
-    private TextView statusField,roleField;
-    private Context context;
-    private int byGetOrPost = 0;
+public class Api extends AsyncTask <String, Void, String>{
 
-    //flag 0 means get and 1 means post.(By default it is get.)
 
     @Override
-    protected Object doInBackground(Object[] objects) {
-        if(byGetOrPost == 0){ //means by Get Method
+    protected String doInBackground(String... strings) {
         try{
             String link = "http://192.168.43.4/AndroidCall/Affiche.php";
 
@@ -53,8 +50,6 @@ public class Api extends AsyncTask {
             } catch(Exception e){
                 return new String("Exception: " + e.getMessage());
             }
-        }
-        return null;
     }
 
     @Override
@@ -62,8 +57,7 @@ public class Api extends AsyncTask {
         super.onPreExecute();
     }
 
-    @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
+    protected void onPostExecute(String result){
+        //text.setText(result);
     }
 }

@@ -11,6 +11,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    android {
+        useLibrary 'org.apache.http.legacy'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -32,4 +37,5 @@ dependencies {
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
 }
