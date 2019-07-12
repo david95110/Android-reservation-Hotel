@@ -1,5 +1,6 @@
 package kz.zhakhanyergali.qrscanner.Activity;
 
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URI;
+import java.net.URL;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import com.google.zxing.Result;
 
 import butterknife.BindView;
@@ -30,7 +47,6 @@ import kz.zhakhanyergali.qrscanner.Entity.History;
 import kz.zhakhanyergali.qrscanner.R;
 import kz.zhakhanyergali.qrscanner.SQLite.ORM.HistoryORM;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     // Init ui elements
@@ -88,8 +104,58 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         View v = dialog.getWindow().getDecorView();
         v.setBackgroundResource(android.R.color.transparent);
 
-        TextView text = (TextView) dialog.findViewById(R.id.someText);
+        final TextView text = (TextView) dialog.findViewById(R.id.someText);
         text.setText(rawResult.getText());
+
+        //*******************************************************************************
+
+        class Api extends AsyncTask <String, Void, String>{
+
+
+            @Override
+            protected String doInBackground(String... strings) {
+    
+                String link = "https://reservationsalles.000webhostapp.com/Site/getDispoSalleAPP?num_salles=A01&date=2019-07-09";
+
+                try{
+                    URL url = new URL(link);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpGet request = new HttpGet();
+                    request.setURI(new URI(link));
+                    HttpResponse response = client.execute(request);
+                    BufferedReader in = new BufferedReader(new
+                            InputStreamReader(response.getEntity().getContent()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line="";
+
+                    while ((line = in.readLine()) != null) {
+                        sb.append(line);
+                        break;
+                    }  in.close();
+
+                    return sb.toString();
+
+                } catch(Exception e){
+                    return new String("Exception: " + e.getMessage());
+                }
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            protected void onPostExecute(String result){
+                text.setText(result);
+            }
+        }
+        new Api().execute();
+
+
+        //********************************************************************************
+
+
         ImageView img = (ImageView) dialog.findViewById(R.id.imgOfDialog);
         img.setImageResource(R.drawable.ic_done_gr);
 
