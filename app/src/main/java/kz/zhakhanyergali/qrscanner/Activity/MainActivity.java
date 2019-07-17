@@ -19,8 +19,10 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +35,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import com.google.zxing.Result;
 
@@ -109,13 +113,21 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         //*******************************************************************************
 
-        class Api extends AsyncTask <String, Void, String>{
+
+        final ArrayList<String> items = new ArrayList<String>();
+        final ListView myList =(ListView) dialog.findViewById(R.id.myList);
+
+        class Api extends AsyncTask<String, Void, String> {
 
 
             @Override
             protected String doInBackground(String... strings) {
-    
-                String link = "https://reservationsalles.000webhostapp.com/Site/getDispoSalleAPP?num_salles=A01&date=2019-07-09";
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = sdf.format(c.getTime());
+                String data = "Disponiblilité de la salle"+ rawResult.getText() +" d'aujourd'hui: \n \n ";
+
+                String link = "https://reservationsalles.000webhostapp.com/Site/getDispoSalleAPP?num_salles="+rawResult.getText()+"&date="+strDate;
 
                 try{
                     URL url = new URL(link);
@@ -133,11 +145,25 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         sb.append(line);
                         break;
                     }  in.close();
+                    JSONTokener tokener = new JSONTokener(sb.toString());
+                    JSONArray finalResult = new JSONArray(tokener);
 
-                    return sb.toString();
+                    for(int i=0; i < finalResult.length(); i++){
+                        JSONObject jsonObject = finalResult.getJSONObject(i);
+
+                        int idSalle = Integer.parseInt(jsonObject.optString("idSalle").toString());
+                        String Date = jsonObject.optString("Date").toString();
+                        String  HeureDebut = jsonObject.optString("HeureDebut").toString();
+                        String statut = jsonObject.optString("statut").toString();
+                        data = "Heure: "+ HeureDebut +" \n statut:" +statut+ " \n";
+                        items.add(data);
+
+                    }
+
+                    return data;
 
                 } catch(Exception e){
-                    return new String("Exception: " + e.getMessage());
+                    return null;
                 }
             }
 
@@ -145,14 +171,17 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             protected void onPreExecute() {
                 super.onPreExecute();
             }
-
+            @Override
             protected void onPostExecute(String result){
+
                 text.setText(result);
+                text.setVisibility(View.GONE);
             }
         }
         new Api().execute();
 
-
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
+        myList.setAdapter(mArrayAdapter);
         //********************************************************************************
 
 
