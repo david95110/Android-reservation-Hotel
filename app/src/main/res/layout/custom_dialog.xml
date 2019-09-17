@@ -21,7 +21,7 @@
     <ListView
         android:id="@+id/myList"
         android:layout_width="match_parent"
-        android:layout_height="319dp" />
+        android:layout_height="454dp" />
 
     <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
         android:id="@+id/someText"

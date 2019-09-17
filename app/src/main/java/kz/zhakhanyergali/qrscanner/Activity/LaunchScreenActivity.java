@@ -17,7 +17,7 @@ public class LaunchScreenActivity extends AppCompatActivity {
         int secondsDelayed = 3;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(LaunchScreenActivity.this, MainActivity.class));
+                startActivity(new Intent(LaunchScreenActivity.this, LoginActivity.class));
                 finish();
             }
         }, secondsDelayed * 1000);

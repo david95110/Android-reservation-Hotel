@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kz.zhakhanyergali.qrscanner.Activity.LoginActivity"
+    android:id="@+id/mainLayout"
+    android:focusableInTouchMode="true">
+
+        <LinearLayout
+            style="@style/df_row_vertical"
+            android:layout_height="match_parent"
+            android:weightSum="12">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:background="@color/df_danger"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    tools:ignore="Suspicious0dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewLogo"
+                            android:layout_width="200dp"
+                            android:layout_height="229dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/logo" />
+
+                        <TextView
+                            style="@style/df_h3"
+                            android:layout_width="wrap_content"
+                            android:text="Réservation de salles"
+                            android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7"
+                    android:background="@color/formBg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    tools:ignore="Suspicious0dp">
+
+                        <LinearLayout
+                            android:id="@+id/sendOtpLayout"
+                            style="@style/df_row_vertical"
+                            android:layout_height="390dp"
+                            android:gravity="center"
+                            android:visibility="visible">
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/textInputLayoutUname"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/editTextUname"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="Email"
+                                            android:inputType="textEmailAddress"
+                                            android:singleLine="true" />
+
+                                </android.support.design.widget.TextInputLayout>
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/textInputLayoutPassword"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/editTextPassword"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="Mot de passe"
+                                            android:inputType="textPassword"
+                                            android:singleLine="true" />
+
+                                </android.support.design.widget.TextInputLayout>
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center"
+                                            android:visibility="visible">
+
+                                                <RadioGroup
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:gravity="center">
+
+                                                        <RadioButton
+                                                            android:id="@+id/etudiant"
+                                                            android:layout_width="119dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:text="Professeur" />
+
+                                                        <RadioButton
+                                                            android:id="@+id/Prof"
+                                                            android:layout_width="120dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:text="Etudiant" />
+                                                </RadioGroup>
+
+                                        </LinearLayout>
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+                                <Button
+                                    android:id="@+id/connect_btn"
+                                    style="@style/df4_btn_danger"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="38dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginTop="40dp"
+                                    android:text="Connexion" />
+
+                                <ProgressBar
+                                    android:id="@+id/progressSendingOtp"
+                                    style="?android:attr/progressBarStyleLarge"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:indeterminate="true"
+                                    android:visibility="gone" />
+
+                                <TextView
+                                    style="@style/df_h6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:text="S'inscrire maintenant!"
+                                    android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+                </LinearLayout>
+        </LinearLayout>
+</LinearLayout>
