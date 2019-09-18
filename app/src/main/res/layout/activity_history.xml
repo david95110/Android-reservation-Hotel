@@ -9,45 +9,46 @@
     tools:context="kz.zhakhanyergali.qrscanner.Activity.HistoryActivity">
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="#008270">
 
         <ImageView
             android:id="@+id/backButton"
-            android:clickable="true"
-            android:onClick="historyOnClickEvents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/ic_back"
+            android:clickable="true"
+            android:onClick="historyOnClickEvents"
             android:scaleType="centerCrop" />
 
         <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
-            android:text="History"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@+id/backButton"
-            android:layout_toStartOf="@+id/clearButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" />
+            android:layout_toStartOf="@+id/clearButton"
+            android:layout_toEndOf="@+id/backButton"
+            android:background="#008270"
+            android:gravity="center"
+            android:text="History"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/clearButton"
-            android:clickable="true"
-            android:onClick="historyOnClickEvents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/ic_clear"
+            android:clickable="true"
+            android:onClick="historyOnClickEvents"
             android:scaleType="centerCrop" />
 
     </RelativeLayout>

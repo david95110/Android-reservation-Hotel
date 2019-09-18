@@ -9,22 +9,22 @@
     tools:context="kz.zhakhanyergali.qrscanner.Activity.MainActivity">
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="#008270">
 
         <ImageView
             android:id="@+id/lightButton"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:onClick="mainActivityOnClickEvents"
-            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_flash_on"
-            android:scaleType="centerCrop" />
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:onClick="mainActivityOnClickEvents"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_flash_on" />
 
         <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
             android:id="@+id/titleActionBar"
@@ -32,24 +32,25 @@
             android:layout_height="match_parent"
             android:layout_toStartOf="@+id/historyButton"
             android:layout_toEndOf="@+id/lightButton"
+            android:background="#008270"
             android:gravity="center"
             android:text="Reservation de salles"
-            android:textColor="@android:color/black"
+            android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/historyButton"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:onClick="mainActivityOnClickEvents"
-            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_history"
-            android:scaleType="centerCrop" />
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:onClick="mainActivityOnClickEvents"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_history" />
 
     </RelativeLayout>
 
@@ -57,20 +58,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:minHeight="32dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#7DBDB6"
+        android:minHeight="32dp">
 
         <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
-            android:text="@string/qr_hint"
-            android:textStyle="normal"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:textSize="17sp"
+            android:background="#7DBDB6"
             android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:text="@string/qr_hint"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:textStyle="normal" />
 
     </RelativeLayout>
 

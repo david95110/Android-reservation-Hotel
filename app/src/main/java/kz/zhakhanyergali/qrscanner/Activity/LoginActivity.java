@@ -1,14 +1,10 @@
 package kz.zhakhanyergali.qrscanner.Activity;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.icu.util.Calendar;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -18,18 +14,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 
 import kz.zhakhanyergali.qrscanner.R;
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
         RadioGroup rg = (RadioGroup) findViewById(R.id.radiogroup);
         rg.check(R.id.Etudiant);
         final EditText email = (EditText)findViewById(R.id.email);
-        final EditText pass = (EditText)findViewById(R.id.pass);
-
+        final EditText pass = (EditText)findViewById(R.id.hd);
+        final String[] Statut = new String[1];
         Button connect = (Button) findViewById(R.id.connect_btn);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -51,9 +42,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.Etudiant:
+                        Statut[0] = "etudiant";
                         Toast.makeText(getApplicationContext(), "Etudiant", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.professeur:
+                        Statut[0] = "professeur";
                         Toast.makeText(getApplicationContext(), "Professeur", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -69,10 +62,11 @@ public class LoginActivity extends AppCompatActivity {
                 class Api extends AsyncTask<String, Void, String> {
 
 
+                    String link = "https://reservationsalles.000webhostapp.com/Site/connect?mail="
+                            +email.getText()+"?pass"+pass.getText()+"statut"+ Statut[0];
+
                     @Override
                     protected String doInBackground(String... strings) {
-
-                        @SuppressLint("WrongThread") String link = "https://reservationsalles.000webhostapp.com/Site/conexion?email="+email.getText()+"?password"+pass.getText();
 
                         try{
                             URL url = new URL(link);
@@ -90,8 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                                 sb.append(line);
                                 break;
                             }  in.close();
-                            JSONTokener tokener = new JSONTokener(sb.toString());
-                            JSONArray finalResult = new JSONArray(tokener);
 
                         return sb.toString();
 
@@ -106,14 +98,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     @Override
                     protected void onPostExecute(String result){
-                        Toast.makeText(getApplicationContext(),
-                                result,Toast.LENGTH_SHORT).show();
                         if(result.equals("good")) {
                             Toast.makeText(getApplicationContext(),
                                     "Connecté",Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(getApplicationContext(),
-                                    "Echec",Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(getApplicationContext(), result ,Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
                         }
                     }
                 }
