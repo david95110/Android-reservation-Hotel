@@ -60,7 +60,7 @@
                                     android:layout_height="wrap_content">
 
                                         <EditText
-                                            android:id="@+id/editTextUname"
+                                            android:id="@+id/email"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:hint="Email"
@@ -75,7 +75,7 @@
                                     android:layout_height="wrap_content">
 
                                         <EditText
-                                            android:id="@+id/editTextPassword"
+                                            android:id="@+id/pass"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:hint="Mot de passe"
@@ -96,21 +96,23 @@
                                             android:visibility="visible">
 
                                                 <RadioGroup
+                                                    android:id="@+id/radiogroup"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:gravity="center">
+                                                    android:gravity="center"
+                                                    android:orientation="horizontal">
 
                                                         <RadioButton
-                                                            android:id="@+id/etudiant"
+                                                            android:id="@+id/Etudiant"
                                                             android:layout_width="119dp"
                                                             android:layout_height="wrap_content"
-                                                            android:text="Professeur" />
+                                                            android:text="Etudiant" />
 
                                                         <RadioButton
-                                                            android:id="@+id/Prof"
+                                                            android:id="@+id/professeur"
                                                             android:layout_width="120dp"
                                                             android:layout_height="wrap_content"
-                                                            android:text="Etudiant" />
+                                                            android:text="Professeur" />
                                                 </RadioGroup>
 
                                         </LinearLayout>
