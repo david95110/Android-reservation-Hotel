@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import kz.zhakhanyergali.qrscanner.R;
 
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         final String[] Statut = new String[1];
         Button connect = (Button) findViewById(R.id.connect_btn);
 
+
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -53,17 +58,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                final String mdp = pass.getText().toString();
+                final String mail = email.getText().toString();
+
                 //****************************************************************************************************
                 class Api extends AsyncTask<String, Void, String> {
 
-
-                    String link = "https://reservationsalles.000webhostapp.com/Site/connect?mail="
-                            +email.getText()+"?pass"+pass.getText()+"statut"+ Statut[0];
+                    String link = "http://reservationsalles.yj.fr/Site/ApiConnection?email="+mail+"&pwd="+md5(mdp)+"&statut="+Statut[0];
 
                     @Override
                     protected String doInBackground(String... strings) {
@@ -98,14 +105,16 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     @Override
                     protected void onPostExecute(String result){
-                        if(result.equals("good")) {
+                        if(result.equals("WRONG_EMAIL")) {
                             Toast.makeText(getApplicationContext(),
-                                    "Connecté",Toast.LENGTH_SHORT).show();
+                                    "Ce compte n'existe pas: "+ mail,Toast.LENGTH_SHORT).show();
+                        }else if(result.equals("BAD_IDENTIFIERS")){
+                            Toast.makeText(getApplicationContext(),
+                                    "Email ou mot de passe incorrect" ,Toast.LENGTH_SHORT).show();
                         }else{
-
-                            Toast.makeText(getApplicationContext(), result ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),
+                                    "Connecté:" + result,Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
                         }
                     }
                 }
@@ -114,11 +123,31 @@ public class LoginActivity extends AppCompatActivity {
                 //****************************************************************************************************
 
 
-
                 new Api().execute();
 
             }
         });
+
+    }
+
+    private String md5(String s) {
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+
+            return hexString.toString();
+        }catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
 
     }
 

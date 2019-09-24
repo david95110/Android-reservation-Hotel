@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                 String strDate = sdf.format(c.getTime());
                 String data = "Disponiblilité de la salle"+ rawResult.getText() +" d'aujourd'hui: \n \n ";
 
-                String link = "https://reservationsalles.000webhostapp.com/Site/getDispoSalleAPP?num_salles="+rawResult.getText()+"&date="+strDate;
+                String link = "http://reservationsalles.yj.fr/Site/getDispoSalleAPP?num_salles="+rawResult.getText()+"&date="+strDate;
 
                 try{
                     URL url = new URL(link);
