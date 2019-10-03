@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kz.zhakhanyergali.qrscanner.Activity.LoginActivity"
+    tools:context="kz.zhakhanyergali.qrscanner.Activity.InscriptionActivity"
     android:id="@+id/mainLayout"
     android:focusableInTouchMode="true">
 
@@ -15,8 +15,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="142dp"
-            android:layout_weight="5"
+            android:layout_height="110dp"
+            android:layout_weight="3"
             android:background="@color/df_danger"
             android:gravity="center"
             android:orientation="vertical"
@@ -24,17 +24,23 @@
 
             <ImageView
                 android:id="@+id/imageViewLogo"
-                android:layout_width="67dp"
-                android:layout_height="229dp"
+                android:layout_width="200dp"
+                android:layout_height="109dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/logo" />
+
+            <TextView
+                style="@style/df_h3"
+                android:layout_width="wrap_content"
+                android:text="Inscription"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="649dp"
-            android:layout_weight="9"
+            android:layout_height="496dp"
+            android:layout_weight="7"
             android:background="@color/formBg"
             android:gravity="center"
             android:orientation="horizontal"
@@ -44,10 +50,40 @@
             <LinearLayout
                 android:id="@+id/sendOtpLayout"
                 style="@style/df_row_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="527dp"
                 android:gravity="center"
                 android:visibility="visible">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/tnom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nom"
+                        android:inputType="text"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tprenom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/prenom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Prenom"
+                        android:inputType="text"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
 
 
                 <android.support.design.widget.TextInputLayout
@@ -56,15 +92,14 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/Nom"
+                        android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="SALLE"
-                        android:inputType="text"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
-
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textInputLayoutPassword"
@@ -72,56 +107,12 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/date"
+                        android:id="@+id/hd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="date"
-                        android:inputType="date" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/heurdeb"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Heure de debut"
-                        android:inputType="time" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/heurfin"
-                        android:layout_width="370dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Heure de fin"
-                        android:inputType="time" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/prenom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Membres"
-                        android:inputType="time" />
+                        android:hint="Mot de passe"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -134,16 +125,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:visibility="visible" />
+                        android:visibility="visible">
+
+                        <RadioGroup
+                            android:id="@+id/radiogroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal" />
+
+                    </LinearLayout>
 
 
                 </android.support.design.widget.TextInputLayout>
-
-                <Switch
-                    android:id="@+id/switch1"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:text="Permettre la reservation de cette salle" />
 
                 <Button
                     android:id="@+id/inscrire"
@@ -152,7 +146,7 @@
                     android:layout_height="38dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="40dp"
-                    android:text="Réserver" />
+                    android:text="S'inscrire" />
 
                 <ProgressBar
                     android:id="@+id/progressSendingOtp"

@@ -85,6 +85,23 @@
                                 </android.support.design.widget.TextInputLayout>
 
                                 <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/stat"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/statut"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="hidden"
+                                            android:inputType="text"
+                                            android:singleLine="true"
+                                            android:visibility="gone" />
+
+                                </android.support.design.widget.TextInputLayout>
+
+
+                                <android.support.design.widget.TextInputLayout
                                     android:id="@+id/type"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
@@ -121,7 +138,7 @@
                                 </android.support.design.widget.TextInputLayout>
 
                                 <Button
-                                    android:id="@+id/connect_btn"
+                                    android:id="@+id/inscrire"
                                     style="@style/df4_btn_danger"
                                     android:layout_width="match_parent"
                                     android:layout_height="38dp"
@@ -138,7 +155,8 @@
                                     android:indeterminate="true"
                                     android:visibility="gone" />
 
-                                <TextView
+                                <Button
+                                    android:id="@+id/inscription"
                                     style="@style/df_h6"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

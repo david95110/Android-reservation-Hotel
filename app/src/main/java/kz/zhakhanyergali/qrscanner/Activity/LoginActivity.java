@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +14,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -38,26 +40,39 @@ public class LoginActivity extends AppCompatActivity {
         rg.check(R.id.Etudiant);
         final EditText email = (EditText)findViewById(R.id.email);
         final EditText pass = (EditText)findViewById(R.id.hd);
-        final String[] Statut = new String[1];
-        Button connect = (Button) findViewById(R.id.connect_btn);
+        final EditText Statut = (EditText)findViewById(R.id.statut);
+        Statut.setText("etudiant");
 
+
+        final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+
+        Button connect = (Button) findViewById(R.id.inscrire);
+        Button inscription = (Button) findViewById(R.id.inscription);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+
                 switch(checkedId){
                     case R.id.Etudiant:
-                        Statut[0] = "etudiant";
-                        Toast.makeText(getApplicationContext(), "Etudiant", Toast.LENGTH_SHORT).show();
+                        Statut.setText("etudiant");
                         break;
                     case R.id.professeur:
-                        Statut[0] = "professeur";
-                        Toast.makeText(getApplicationContext(), "Professeur", Toast.LENGTH_SHORT).show();
+                        Statut.setText("professeur");
                         break;
                 }
+
             }
         });
 
+
+        inscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, InscriptionActivity.class));
+            }
+        });
 
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,87 +82,101 @@ public class LoginActivity extends AppCompatActivity {
                 final String mdp = pass.getText().toString();
                 final String mail = email.getText().toString();
 
-                //****************************************************************************************************
-                class Api extends AsyncTask<String, Void, String> {
+                if(!mail.equals("") && !mdp.equals("")) {
 
-                    String link = "http://reservationsalles.yj.fr/Site/ApiConnection?email="+mail+"&pwd="+md5(mdp)+"&statut="+Statut[0];
+                    //****************************************************************************************************
+                    class Api extends AsyncTask<String, Void, String> {
 
-                    @Override
-                    protected String doInBackground(String... strings) {
+                        final String s = Statut.getText().toString();
 
-                        try{
-                            URL url = new URL(link);
-                            HttpClient client = new DefaultHttpClient();
-                            HttpGet request = new HttpGet();
-                            request.setURI(new URI(link));
-                            HttpResponse response = client.execute(request);
-                            BufferedReader in = new BufferedReader(new
-                                    InputStreamReader(response.getEntity().getContent()));
 
-                            StringBuffer sb = new StringBuffer("");
-                            String line="";
+                        String link = "http://reservationsalles.yj.fr/Site/ApiConnection?email=" + mail + "&pwd=" + md5(mdp) + "&statut=" + s;
 
-                            while ((line = in.readLine()) != null) {
-                                sb.append(line);
-                                break;
-                            }  in.close();
+                        @Override
+                        protected String doInBackground(String... strings) {
 
-                        return sb.toString();
+                            String data = "";
 
-                        } catch(Exception e){
-                            return null;
+                            try {
+                                URL url = new URL(link);
+                                HttpClient client = new DefaultHttpClient();
+                                HttpGet request = new HttpGet();
+                                request.setURI(new URI(link));
+                                HttpResponse response = client.execute(request);
+                                BufferedReader in = new BufferedReader(new
+                                        InputStreamReader(response.getEntity().getContent()));
+
+                                StringBuffer sb = new StringBuffer("");
+                                String line = "";
+
+                                while ((line = in.readLine()) != null) {
+                                    sb.append(line);
+                                    break;
+                                } in.close();
+
+                                return sb.toString();
+
+                            } catch (Exception e) {
+                                return null;
+                            }
+                        }
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                        }
+
+                        @Override
+                        protected void onPostExecute(String result) {
+                            Toast.makeText(getApplicationContext(),
+                                    link, Toast.LENGTH_SHORT).show();
+                            if (result.equals("WRONG_EMAIL")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Ce compte n'existe pas: " + mail, Toast.LENGTH_SHORT).show();
+                            } else if (result.equals("BAD_IDENTIFIERS")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Identifiant incorrect", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Connecté:" + result, Toast.LENGTH_SHORT).show();
+                                startActivity(intent);
+                            }
                         }
                     }
 
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                    }
-                    @Override
-                    protected void onPostExecute(String result){
-                        if(result.equals("WRONG_EMAIL")) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Ce compte n'existe pas: "+ mail,Toast.LENGTH_SHORT).show();
-                        }else if(result.equals("BAD_IDENTIFIERS")){
-                            Toast.makeText(getApplicationContext(),
-                                    "Email ou mot de passe incorrect" ,Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(),
-                                    "Connecté:" + result,Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        }
-                    }
+
+                    //****************************************************************************************************
+
+
+                    new Api().execute();
+
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "Veillez entrer des informations valides",Toast.LENGTH_SHORT).show();
                 }
 
-
-                //****************************************************************************************************
-
-
-                new Api().execute();
 
             }
         });
 
     }
 
-    private String md5(String s) {
+    private String md5(String pass) {
 
+        String password = null;
+        MessageDigest mdEnc;
         try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-
-            return hexString.toString();
-        }catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            mdEnc = MessageDigest.getInstance("MD5");
+            mdEnc.update(pass.getBytes(), 0, pass.length());
+            pass = new BigInteger(1, mdEnc.digest()).toString(16);
+            while (pass.length() < 32) {
+                pass = "0" + pass;
+            }
+            password = pass;
+        } catch (NoSuchAlgorithmException e1) {
+            e1.printStackTrace();
         }
-        return "";
+        return password;
 
     }
 
