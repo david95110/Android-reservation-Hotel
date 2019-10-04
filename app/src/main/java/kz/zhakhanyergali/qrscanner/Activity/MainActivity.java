@@ -78,10 +78,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         Intent intent = getIntent();
         String info = intent.getStringExtra("info");
-
-        JSONObject reader = null;
+        
         try {
-            reader = new JSONObject(info);
+            JSONObject reader = new JSONObject(info);
             final int id = Integer.parseInt(reader.getString("idUser"));
             final String nom = reader.getString("nom");
             final String prenom = reader.getString("prenom");
@@ -89,9 +88,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             final  String  logged = reader.getString("logged_in");
             final  String statut = reader.getString("statut");
 
-            Toast.makeText(getApplicationContext(),
-                    "Bienvenu "+prenom +" "+ nom,Toast.LENGTH_SHORT).show();
+            String name = "Bienvenu "+prenom +" "+ nom ;
 
+            final TextView text = (TextView) this.findViewById(R.id.titleActionBar);
+            text.setText(name);
 
         } catch (JSONException e) {
             e.printStackTrace();
