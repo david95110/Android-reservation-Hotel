@@ -35,6 +35,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -74,6 +75,29 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.content_frame);
         mScannerView = new ZXingScannerView(this);
         contentFrame.addView(mScannerView);
+
+        Intent intent = getIntent();
+        String info = intent.getStringExtra("info");
+
+        JSONObject reader = null;
+        try {
+            reader = new JSONObject(info);
+            final int id = Integer.parseInt(reader.getString("idUser"));
+            final String nom = reader.getString("nom");
+            final String prenom = reader.getString("prenom");
+            final String  mail = reader.getString("mail");
+            final  String  logged = reader.getString("logged_in");
+            final  String statut = reader.getString("statut");
+
+            Toast.makeText(getApplicationContext(),
+                    "Bienvenu "+prenom +" "+ nom,Toast.LENGTH_SHORT).show();
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override

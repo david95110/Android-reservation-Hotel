@@ -128,8 +128,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         protected void onPostExecute(String result) {
-                            Toast.makeText(getApplicationContext(),
-                                    link, Toast.LENGTH_SHORT).show();
                             if (result.equals("WRONG_EMAIL")) {
                                 Toast.makeText(getApplicationContext(),
                                         "Ce compte n'existe pas: " + mail, Toast.LENGTH_SHORT).show();
@@ -138,7 +136,10 @@ public class LoginActivity extends AppCompatActivity {
                                         "Identifiant incorrect", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(),
-                                        "Connecté:" + result, Toast.LENGTH_SHORT).show();
+                                        "Connecté", Toast.LENGTH_SHORT).show();
+
+                                intent.putExtra("info", result);
+
                                 startActivity(intent);
                             }
                         }
