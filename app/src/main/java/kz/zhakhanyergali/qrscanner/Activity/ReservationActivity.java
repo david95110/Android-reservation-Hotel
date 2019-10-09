@@ -1,10 +1,13 @@
 package kz.zhakhanyergali.qrscanner.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,19 +52,22 @@ public class ReservationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String selectedItem = intent.getStringExtra("info");
 
-
         String[] separated = selectedItem.split(" | ");
 
-        String salle = separated[0].trim();
+        final String salle = separated[0].trim();
         final String date = separated[2].trim();
         final String heure = separated[4].trim();
+
+        final Switch simpleSwitch = (Switch) findViewById(R.id.switch1);
+        simpleSwitch.setChecked(true);
+
 
         final Button reserver = (Button) findViewById(R.id.reserver);
         final EditText sal = (EditText) findViewById(R.id.salle);
         EditText dat = (EditText) findViewById(R.id.date);
         final EditText heuredeb = (EditText) findViewById(R.id.heurdeb);
         final EditText heurfin = (EditText) findViewById(R.id.heurfin);
-        EditText membres = (EditText) findViewById(R.id.membre);
+        final EditText membres = (EditText) findViewById(R.id.membre);
 
         sal.setText(salle);
         dat.setText(date);
@@ -147,10 +154,16 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if(s.length() != 0)
-                    search[0] = s.toString();
+                if(s.length() != 0){
+
+                    String[] sepa = s.toString().split("; ");
+                    String last = sepa[sepa.length-1].trim();
+
+                    search[0] = last;
                     new Api().execute();
-                myList.setAdapter(mArrayAdapter);
+                    myList.setAdapter(mArrayAdapter);
+                }
+
             }
         });
 
@@ -160,14 +173,97 @@ public class ReservationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedItem = (String) parent.getItemAtPosition(position);
+                String[] separated = selectedItem.split("    |    ");
+                String email = separated[0].trim();
 
-                Toast.makeText(ReservationActivity.this,
-                        selectedItem, Toast.LENGTH_SHORT).show();
-
+                membres.append(email+";");
 
             }
         });
 
+
+
+        reserver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String heurefin = heurfin.getText().toString();
+                final String membre = membres.getText().toString();
+                final Boolean permit = simpleSwitch.isChecked();
+
+
+                String MY_PREF="MyPrefs";
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences(MY_PREF, MODE_PRIVATE);
+
+                final String idUser = pref.getString("idUser", null);
+
+
+                //****************************************************************************************************
+                class Api extends AsyncTask<String, Void, String> {
+
+                    String link = "http://reservationsalles.yj.fr/Etudiant/demande_rdv?API=true&nom_prof="+membre+"&allow_other_group="
+                            +permit+"&salle="+salle+"&date="+date+"&heure_debut="+heure+"&heure_fin="+heurefin+"&idDemandeur="+idUser;
+
+                    @Override
+                    protected String doInBackground(String... strings) {
+
+                        String data = "";
+
+                        try {
+                            URL url = new URL(link);
+                            HttpClient client = new DefaultHttpClient();
+                            HttpGet request = new HttpGet();
+                            request.setURI(new URI(link));
+                            HttpResponse response = client.execute(request);
+                            BufferedReader in = new BufferedReader(new
+                                    InputStreamReader(response.getEntity().getContent()));
+
+                            StringBuffer sb = new StringBuffer("");
+                            String line = "";
+
+                            while ((line = in.readLine()) != null) {
+                                sb.append(line);
+                                break;
+                            } in.close();
+
+                            return sb.toString();
+
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected void onPostExecute(String result) {
+
+                        if(result.equals(1)){
+                            Toast.makeText(getApplicationContext(),
+                                    "Enregistrement réussi!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ReservationActivity.this, MainActivity.class));
+                        }else{
+                            Toast.makeText(getApplicationContext(),
+                                    "Echec de l'enrégistrement!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+
+
+                //****************************************************************************************************
+
+
+                new Api().execute();
+
+
+            }
+
+        });
 
 
 
