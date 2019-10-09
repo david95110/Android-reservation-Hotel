@@ -138,7 +138,7 @@
                                 </android.support.design.widget.TextInputLayout>
 
                                 <Button
-                                    android:id="@+id/inscrire"
+                                    android:id="@+id/reserver"
                                     style="@style/df4_btn_danger"
                                     android:layout_width="match_parent"
                                     android:layout_height="38dp"

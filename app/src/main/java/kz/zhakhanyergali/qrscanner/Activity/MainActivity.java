@@ -205,12 +205,14 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         final ArrayList<String> items = new ArrayList<String>();
         final ListView myList =(ListView) dialog.findViewById(R.id.myList);
 
+        final ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
+
+
         class Api extends AsyncTask<String, Void, String> {
 
             @SuppressLint("WrongThread")
             @Override
             protected String doInBackground(String... strings) {
-
 
                 String data = "Disponiblilité de la salle"+ rawResult.getText() +" d'aujourd'hui: \n \n ";
 
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         String Date = jsonObject.getString("Date");
                         String  HeureDebut = jsonObject.getString("HeureDebut");
                         String statut = jsonObject.optString("statut");
-                        data = Date+ " | " +HeureDebut + " | " +statut;
+                        data = salle.getText()+ " | "+Date+ " | " +HeureDebut + " | " +statut;
                         items.add(data);
 
                     }
@@ -269,22 +271,17 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
         new Api().execute();
 
-        final ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
         myList.setAdapter(mArrayAdapter);
-
 
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        selectedItem, Toast.LENGTH_SHORT).show();
 
-                String[] separated = selectedItem.split(" ");
-                String heure = separated[0];
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String strDate = sdf.format(c.getTime());
+
+                final Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                intent.putExtra("info", selectedItem);
+                startActivity(intent);
 
 
             }

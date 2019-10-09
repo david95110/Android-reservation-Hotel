@@ -56,10 +56,11 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/Nom"
+                        android:id="@+id/salle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="SALLE"
+                        android:hint="Salle"
+                        android:enabled="false"
                         android:inputType="text"
                         android:singleLine="true" />
 
@@ -78,6 +79,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="date"
+                        android:enabled="false"
                         android:inputType="date" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -93,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Heure de debut"
+                        android:enabled="false"
                         android:inputType="time" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -116,12 +119,12 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/prenom"
+                        android:id="@+id/membre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Membres"
-                        android:inputType="time" />
+                        android:inputType="text" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -145,8 +148,13 @@
                     android:layout_height="42dp"
                     android:text="Permettre la reservation de cette salle" />
 
+                <ListView
+                    android:id="@+id/myList"
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp" />
+
                 <Button
-                    android:id="@+id/inscrire"
+                    android:id="@+id/reserver"
                     style="@style/df4_btn_danger"
                     android:layout_width="match_parent"
                     android:layout_height="38dp"

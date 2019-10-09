@@ -14,9 +14,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -47,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
 
-        Button connect = (Button) findViewById(R.id.inscrire);
+        Button connect = (Button) findViewById(R.id.reserver);
         Button inscription = (Button) findViewById(R.id.inscription);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()

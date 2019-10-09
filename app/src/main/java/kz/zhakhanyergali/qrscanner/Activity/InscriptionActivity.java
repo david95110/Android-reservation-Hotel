@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -38,9 +35,9 @@ public class InscriptionActivity extends AppCompatActivity {
         final EditText email = (EditText)findViewById(R.id.email);
         final EditText pass = (EditText)findViewById(R.id.hd);
         final EditText Nom = (EditText)findViewById(R.id.tnom);
-        final EditText Prenom = (EditText)findViewById(R.id.prenom);
+        final EditText Prenom = (EditText)findViewById(R.id.membre);
 
-        Button connect = (Button) findViewById(R.id.inscrire);
+        Button connect = (Button) findViewById(R.id.reserver);
 
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
