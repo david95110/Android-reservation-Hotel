@@ -24,7 +24,8 @@
             android:clickable="true"
             android:onClick="mainActivityOnClickEvents"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_flash_on" />
+            android:src="@drawable/ic_flash_on"
+            app:srcCompat="@android:drawable/ic_lock_power_off" />
 
         <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
             android:id="@+id/titleActionBar"

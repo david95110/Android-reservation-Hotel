@@ -2,12 +2,16 @@ package kz.zhakhanyergali.qrscanner.Activity;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.net.Uri;
@@ -15,12 +19,18 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,9 +86,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         mScannerView = new ZXingScannerView(this);
         contentFrame.addView(mScannerView);
 
+
+        final String MyPREFERENCES = "MyPrefs" ;
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         Intent intent = getIntent();
         String info = intent.getStringExtra("info");
-        
+
         try {
             JSONObject reader = new JSONObject(info);
             final int id = Integer.parseInt(reader.getString("idUser"));
@@ -92,6 +106,17 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
             final TextView text = (TextView) this.findViewById(R.id.titleActionBar);
             text.setText(name);
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("idUser", String.valueOf(id));
+            editor.putString("nom", nom);
+            editor.putString("prenom", prenom);
+            editor.putString("mail", mail);
+            editor.putString("logged_in", logged);
+            editor.putString("statut", statut);
+
+            editor.commit();
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -135,23 +160,61 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         final TextView text = (TextView) dialog.findViewById(R.id.someText);
         text.setText(rawResult.getText());
 
+        final EditText salle = (EditText) dialog.findViewById(R.id.salle);
+        salle.setText(rawResult.getText());
+
         //*******************************************************************************
 
+
+        final EditText date;
+        final DatePickerDialog[] datePickerDialog = new DatePickerDialog[1];
+
+        date = (EditText) dialog.findViewById(R.id.date);
+        // perform click event on edit text
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog[0] = new DatePickerDialog(MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                date.setText( year+ "-"
+                                        + (monthOfYear + 1) + "-" +dayOfMonth );
+
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog[0].show();
+            }
+        });
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = sdf.format(c.getTime());
+        date.setText(strDate);
 
         final ArrayList<String> items = new ArrayList<String>();
         final ListView myList =(ListView) dialog.findViewById(R.id.myList);
 
         class Api extends AsyncTask<String, Void, String> {
 
-
+            @SuppressLint("WrongThread")
             @Override
             protected String doInBackground(String... strings) {
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String strDate = sdf.format(c.getTime());
+
+
                 String data = "Disponiblilité de la salle"+ rawResult.getText() +" d'aujourd'hui: \n \n ";
 
-                String link = "http://reservationsalles.yj.fr/Site/getDispoSalleAPP?num_salles="+rawResult.getText()+"&date="+strDate;
+               final String link = "http://reservationsalles.yj.fr/Site/getDispoSalleAPP?num_salles="+salle.getText()+"&date="+date.getText();
 
                 try{
                     URL url = new URL(link);
@@ -169,26 +232,28 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         sb.append(line);
                         break;
                     }  in.close();
+
                     JSONTokener tokener = new JSONTokener(sb.toString());
                     JSONArray finalResult = new JSONArray(tokener);
-
+                    items.clear();
                     for(int i=0; i < finalResult.length(); i++){
                         JSONObject jsonObject = finalResult.getJSONObject(i);
 
-                        int idSalle = Integer.parseInt(jsonObject.optString("idSalle").toString());
-                        String Date = jsonObject.optString("Date").toString();
-                        String  HeureDebut = jsonObject.optString("HeureDebut").toString();
-                        String statut = jsonObject.optString("statut").toString();
-                        data = "Heure: "+ HeureDebut +" \n statut:" +statut+ " \n";
+                        int idSalle = Integer.parseInt(jsonObject.getString("idSalle"));
+                        String Date = jsonObject.getString("Date");
+                        String  HeureDebut = jsonObject.getString("HeureDebut");
+                        String statut = jsonObject.optString("statut");
+                        data = Date+ " | " +HeureDebut + " | " +statut;
                         items.add(data);
 
                     }
 
-                    return data;
-
                 } catch(Exception e){
                     return null;
                 }
+
+                return data;
+
             }
 
             @Override
@@ -199,13 +264,75 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             protected void onPostExecute(String result){
 
                 text.setText(result);
-                text.setVisibility(View.GONE);
+              text.setVisibility(View.GONE);
             }
         }
         new Api().execute();
 
-        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
+        final ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
         myList.setAdapter(mArrayAdapter);
+
+
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),
+                        selectedItem, Toast.LENGTH_SHORT).show();
+
+                String[] separated = selectedItem.split(" ");
+                String heure = separated[0];
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = sdf.format(c.getTime());
+
+
+            }
+        });
+
+
+        date.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                items.clear();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0)
+                    new Api().execute();
+                myList.setAdapter(mArrayAdapter);
+            }
+        });
+
+
+        salle.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                items.clear();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0)
+                    new Api().execute();
+                myList.setAdapter(mArrayAdapter);
+            }
+        });
+
+
         //********************************************************************************
 
 
@@ -288,19 +415,38 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                 startActivity(i);
                 break;
             case R.id.lightButton:
-                if(flashState==false) {
-                    v.setBackgroundResource(R.drawable.ic_flash_off);
-                    Toast.makeText(getApplicationContext(), "Flashlight turned on", Toast.LENGTH_SHORT).show();
-                    mScannerView.setFlash(true);
-                    flashState = true;
-                }else if(flashState) {
-                    v.setBackgroundResource(R.drawable.ic_flash_on);
-                    Toast.makeText(getApplicationContext(), "Flashlight turned off", Toast.LENGTH_SHORT).show();
-                    mScannerView.setFlash(false);
-                    flashState = false;
-                }
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setMessage("Se déconnecter ? ");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Oui",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.clear();
+                                editor.commit();
+                                finish();
+                                System.exit(0);
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "Non",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+
                 break;
         }
 
     }
+
 }

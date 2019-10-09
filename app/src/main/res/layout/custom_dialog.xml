@@ -3,83 +3,114 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-<LinearLayout
-    android:orientation="vertical"
-    android:background="@drawable/dialog_background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imgOfDialog"
-        android:src="@drawable/ic_done_gr"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
-
-    <ListView
-        android:id="@+id/myList"
-        android:layout_width="match_parent"
-        android:layout_height="454dp" />
-
-    <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
-        android:id="@+id/someText"
-        android:text="Some text"
-        android:layout_margin="10sp"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.2sp"
-        android:background="@android:color/black"/>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_background"
+        android:orientation="vertical">
 
-        <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
-            android:id="@+id/searchButton"
-            android:text="Search"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textColor="@color/orange"
-            android:background="@android:color/transparent"
+        <ImageView
+            android:id="@+id/imgOfDialog"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="48dp" />
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_done_gr" />
 
-        <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
-            android:id="@+id/copyButton"
-            android:text="Copy"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textColor="@color/orange"
-            android:background="@android:color/transparent"
+        <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomTextView
+            android:id="@+id/someText"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="48dp" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:gravity="center"
+            android:text="Some text"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
 
-        <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
-            android:id="@+id/shareButton"
-            android:text="Share"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textColor="@color/orange"
-            android:background="@android:color/transparent"
+        <EditText
+            android:id="@+id/salle"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="48dp" />
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Nom de la salle..." />
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:hint="Selectionner la  Date..."
+            android:padding="15dp"
+            android:textColor="#897"
+            android:textColorHint="#090"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dialog_background"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/myList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2sp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="Search"
+                android:textAllCaps="false"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
+                android:id="@+id/copyButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="Copy"
+                android:textAllCaps="false"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <kz.zhakhanyergali.qrscanner.CustomWidgets.CustomButton
+                android:id="@+id/shareButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="Share"
+                android:textAllCaps="false"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 
     </ScrollView>
