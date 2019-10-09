@@ -100,18 +100,16 @@ public class ReservationActivity extends AppCompatActivity {
                         break;
                     }  in.close();
 
-                    Toast.makeText(ReservationActivity.this,
-                            sb.toString(), Toast.LENGTH_SHORT).show();
 
                     JSONTokener tokener = new JSONTokener(sb.toString());
                     JSONArray finalResult = new JSONArray(tokener);
-                    
+                    items.clear();
                     for(int i=0; i < finalResult.length(); i++){
                         JSONObject jsonObject = finalResult.getJSONObject(i);
 
-                        String  email = jsonObject.getString("mail");
+                        String  email = jsonObject.getString("email");
                         String statut = jsonObject.optString("statut");
-                        data = email;
+                        data = email + "    |    "+ statut;
                         items.add(data);
 
                     }
@@ -129,9 +127,7 @@ public class ReservationActivity extends AppCompatActivity {
                 super.onPreExecute();
             }
             @Override
-            protected void onPostExecute(String result){
-
-            }
+            protected void onPostExecute(String result){ }
         }
 
         myList.setAdapter(mArrayAdapter);
@@ -145,6 +141,7 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
+                items.clear();
             }
 
             @Override

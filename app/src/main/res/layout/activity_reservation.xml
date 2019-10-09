@@ -142,16 +142,16 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <ListView
+                    android:id="@+id/myList"
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp" />
+
                 <Switch
                     android:id="@+id/switch1"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:text="Permettre la reservation de cette salle" />
-
-                <ListView
-                    android:id="@+id/myList"
-                    android:layout_width="match_parent"
-                    android:layout_height="127dp" />
 
                 <Button
                     android:id="@+id/reserver"
