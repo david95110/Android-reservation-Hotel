@@ -242,14 +242,18 @@ public class ReservationActivity extends AppCompatActivity {
                     @Override
                     protected void onPostExecute(String result) {
 
-                        if(result.equals(1)){
-                            Toast.makeText(getApplicationContext(),
-                                    "Enregistrement réussi!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(ReservationActivity.this, MainActivity.class));
-                        }else{
-                            Toast.makeText(getApplicationContext(),
-                                    "Echec de l'enrégistrement!", Toast.LENGTH_SHORT).show();
-                        }
+                            int myNum = Integer.parseInt(result);
+
+                            if(myNum==1){
+                                Toast.makeText(getApplicationContext(),
+                                        "Enregistrement réussi!", Toast.LENGTH_SHORT).show();
+                                //startActivity(new Intent(ReservationActivity.this, MainActivity.class));
+                            }else{
+                                Toast.makeText(getApplicationContext(),
+                                        "Echec de l'enrégistrement!", Toast.LENGTH_SHORT).show();
+                            }
+
+
 
                     }
                 }
