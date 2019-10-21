@@ -81,6 +81,38 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/notif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:clickable="true"
+            android:onClick="mainActivityOnClickEvents"
+            app:srcCompat="@android:drawable/stat_notify_chat" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/rdv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="mainActivityOnClickEvents"
+            android:layout_gravity="bottom|left"
+            app:srcCompat="@drawable/ic_date" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:clickable="true"
+            android:onClick="mainActivityOnClickEvents"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+
+    </FrameLayout>
+
 
 </LinearLayout>

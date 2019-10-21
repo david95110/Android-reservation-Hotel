@@ -47,8 +47,6 @@ public class ReservationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-
-
         Intent intent = getIntent();
         String selectedItem = intent.getStringExtra("info");
 

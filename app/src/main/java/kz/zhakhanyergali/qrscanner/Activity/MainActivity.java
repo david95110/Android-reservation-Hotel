@@ -21,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
@@ -245,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         String Date = jsonObject.getString("Date");
                         String  HeureDebut = jsonObject.getString("HeureDebut");
                         String statut = jsonObject.optString("statut");
-                        data = salle.getText()+ " | "+Date+ " | " +HeureDebut + " | " +statut;
+                        data = salle.getText()+ "  "+Date+ " | " +HeureDebut + " | " +statut;
                         items.add(data);
 
                     }
@@ -277,12 +276,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 final Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 intent.putExtra("info", selectedItem);
                 startActivity(intent);
-
 
             }
         });
@@ -339,6 +336,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         Button webSearch = (Button) dialog.findViewById(R.id.searchButton);
         Button copy = (Button) dialog.findViewById(R.id.copyButton);
         Button share = (Button) dialog.findViewById(R.id.shareButton);
+        ImageView rdv = (ImageView) findViewById(R.id.rdv);
+
+
         webSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -403,10 +403,30 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
     }
 
+
+
     @OnClick
     void mainActivityOnClickEvents(View v) {
 
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_dialog);
+        v.setBackgroundResource(android.R.color.transparent);
+
         switch (v.getId()) {
+
+            case R.id.add:
+                dialog.show();
+                break;
+            case R.id.notif:
+                i = new Intent(this, NotifyActivity.class);
+                startActivity(i);
+                break;
+            case R.id.rdv:
+                i = new Intent(this, RdvActivity.class);
+                startActivity(i);
+                break;
             case R.id.historyButton:
                 i = new Intent(this, HistoryActivity.class);
                 startActivity(i);

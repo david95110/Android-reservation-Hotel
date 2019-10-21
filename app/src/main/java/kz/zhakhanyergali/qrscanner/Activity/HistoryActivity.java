@@ -24,7 +24,7 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
     // Init ui elements
     @BindView(R.id.historySwipeRefreshLayout)
     SwipeRefreshLayout historySwipeRefreshLayout;
-    @BindView(R.id.historyRecyclerView)
+    @BindView(R.id.myList)
     RecyclerView historyRecyclerView;
 
     // Variables
