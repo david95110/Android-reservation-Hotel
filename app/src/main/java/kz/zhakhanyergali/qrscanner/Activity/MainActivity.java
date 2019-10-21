@@ -414,6 +414,175 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         dialog.setContentView(R.layout.custom_dialog);
         v.setBackgroundResource(android.R.color.transparent);
 
+        //*******************************************************************************
+
+        final TextView text = (TextView) dialog.findViewById(R.id.someText);
+
+        final EditText salle = (EditText) dialog.findViewById(R.id.salle);
+
+        final EditText date;
+        final DatePickerDialog[] datePickerDialog = new DatePickerDialog[1];
+
+        date = (EditText) dialog.findViewById(R.id.date);
+        // perform click event on edit text
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog[0] = new DatePickerDialog(MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                date.setText( year+ "-"
+                                        + (monthOfYear + 1) + "-" +dayOfMonth );
+
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog[0].show();
+            }
+        });
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = sdf.format(c.getTime());
+        date.setText(strDate);
+
+        final ArrayList<String> items = new ArrayList<String>();
+        final ListView myList =(ListView) dialog.findViewById(R.id.myList);
+
+        final ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, items);
+
+
+        class Api extends AsyncTask<String, Void, String> {
+
+            @SuppressLint("WrongThread")
+            @Override
+            protected String doInBackground(String... strings) {
+
+                String data = "";
+
+                final String link = "http://reservationsalles.yj.fr/Site/getDispoSalleAPP?num_salles="+salle.getText()+"&date="+date.getText();
+
+                try{
+                    URL url = new URL(link);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpGet request = new HttpGet();
+                    request.setURI(new URI(link));
+                    HttpResponse response = client.execute(request);
+                    BufferedReader in = new BufferedReader(new
+                            InputStreamReader(response.getEntity().getContent()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line="";
+
+                    while ((line = in.readLine()) != null) {
+                        sb.append(line);
+                        break;
+                    }  in.close();
+
+                    JSONTokener tokener = new JSONTokener(sb.toString());
+                    JSONArray finalResult = new JSONArray(tokener);
+                    items.clear();
+                    for(int i=0; i < finalResult.length(); i++){
+                        JSONObject jsonObject = finalResult.getJSONObject(i);
+
+                        int idSalle = Integer.parseInt(jsonObject.getString("idSalle"));
+                        String Date = jsonObject.getString("Date");
+                        String  HeureDebut = jsonObject.getString("HeureDebut");
+                        String statut = jsonObject.optString("statut");
+                        data = salle.getText()+ " | "+Date+ " | " +HeureDebut + " | " +statut;
+                        items.add(data);
+
+                    }
+
+                } catch(Exception e){
+                    return null;
+                }
+
+                return data;
+
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+            @Override
+            protected void onPostExecute(String result){
+
+                text.setText(result);
+                text.setVisibility(View.GONE);
+            }
+        }
+        new Api().execute();
+
+        myList.setAdapter(mArrayAdapter);
+
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                intent.putExtra("info", selectedItem);
+                startActivity(intent);
+
+            }
+        });
+
+
+        date.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                items.clear();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0)
+                    new Api().execute();
+                myList.setAdapter(mArrayAdapter);
+            }
+        });
+
+
+        salle.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                items.clear();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0)
+                    new Api().execute();
+                myList.setAdapter(mArrayAdapter);
+            }
+        });
+
+
+
         switch (v.getId()) {
 
             case R.id.add:
