@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         String Date = jsonObject.getString("Date");
                         String  HeureDebut = jsonObject.getString("HeureDebut");
                         String statut = jsonObject.optString("statut");
-                        data = salle.getText()+ "  "+Date+ " | " +HeureDebut + " | " +statut;
+                        data = salle.getText()+ " | "+Date+ " | " +HeureDebut + " | " +statut;
                         items.add(data);
 
                     }

@@ -143,7 +143,7 @@ public class RdvActivity extends AppCompatActivity {
                     for(int i=0; i < passer.length(); i++){
                         String data1 = "";
                         JSONObject jsonObject = passer.getJSONObject(i);
-                        String salle = jsonObject.getString("salle");
+                        String salle = jsonObject.getString("nom_salle");
                         String Createur = jsonObject.getString("demandeur");
                         String  membres = jsonObject.getString("membres");
                         String date = jsonObject.optString("date");
