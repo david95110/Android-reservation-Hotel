@@ -118,7 +118,8 @@ public class RdvActivity extends AppCompatActivity {
                         data = "";
                         JSONObject jsonObject = Avenir.getJSONObject(i);
 
-                        String salle = jsonObject.getString("salle");
+                        String idSalle = jsonObject.getString("idSalle");
+                        String salle = jsonObject.getString("nom_salle");
                         String Createur = jsonObject.getString("demandeur");
                         String  membres = jsonObject.getString("membres");
                         String date = jsonObject.optString("date");
@@ -130,7 +131,7 @@ public class RdvActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("date", date);
                         editor.putString("HeureDebut", HeureDebut);
-                        editor.putString("salle", salle);
+                        editor.putString("idSalle", idSalle);
                         editor.commit();
 
                         data = "Membres: "+Createur+ membres + "\n Date: " +date+"\n Heure: "+HeureDebut+" à "+HeureFin+"\n Salle: "+salle;
@@ -205,14 +206,16 @@ public class RdvActivity extends AppCompatActivity {
                                         final String idUser = pref1.getString("idUser", null);
                                         final String date = pref.getString("date", null);
 
-                                        String[] separ = date.split(":");
-                                        String date1 = separ[0].trim()+":"+separ[1].trim();
-
                                         final String HeureDebut = pref.getString("HeureDebut", null);
-                                        final String salle = pref.getString("salle", null);
+                                        final String salle = pref.getString("idSalle", null);
 
-                                        final String link = "http://reservationsalles.yj.fr/Etudiant/annuler_rdv?date="+date1+"&heure_debut="
-                                                +HeureDebut+"&idSalle="+salle+"&idInterlocuteur="+idUser+"&API=true";
+                                        String[] separ = HeureDebut.split(":");
+                                        String HeureDebut1 = separ[0].trim()+":"+separ[1].trim();
+
+                                        final String link = "http://reservationsalles.yj.fr/Etudiant/annuler_rdv?date="+date+"&heure_debut="
+                                                +HeureDebut1+"&idSalle="+salle+"&idInterlocuteur="+idUser+"&API=true";
+
+                                        System.out.println(link);
 
                                         try {
                                             URL url = new URL(link);
@@ -247,6 +250,7 @@ public class RdvActivity extends AppCompatActivity {
 
                                     @Override
                                     protected void onPostExecute(String result) {
+
                                         if (result.equals("1")){
                                             Toast.makeText(RdvActivity.this, "Rendez-vous annulé", Toast.LENGTH_SHORT).show();
 
